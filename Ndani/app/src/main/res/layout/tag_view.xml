@@ -2,8 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/tag_bg"
-    android:clickable="true"
+    android:background="@drawable/tag_selector"
     android:layout_margin="8dp"
     android:paddingLeft="8dp"
     android:paddingRight="20dp">

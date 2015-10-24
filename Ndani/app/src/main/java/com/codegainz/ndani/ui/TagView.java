@@ -40,8 +40,9 @@ public class TagView extends FrameLayout {
     }
 
     private void setUp(Context context) {
+        setClickable(true);
         body = View.inflate(context, R.layout.tag_view, this);
-        body.setOnClickListener(bodyClickListener);
+        setOnClickListener(selectClickListener);
         textView = (TextView) body.findViewById(R.id.textView);
     }
 
@@ -49,14 +50,19 @@ public class TagView extends FrameLayout {
         textView.setText(text);
     }
 
-    private OnClickListener bodyClickListener = new OnClickListener() {
+    private OnClickListener selectClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            body.setSelected(!isTagSelected());
+            setSelected(true);
+            setOnClickListener(unselectListener);
         }
     };
 
-    public boolean isTagSelected(){
-        return body.isSelected();
-    }
+    private OnClickListener unselectListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            setSelected(false);
+            setOnClickListener(selectClickListener);
+        }
+    };
 }

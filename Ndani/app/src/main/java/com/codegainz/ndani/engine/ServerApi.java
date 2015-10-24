@@ -19,6 +19,8 @@ public interface ServerApi {
     @POST("/api/Accounts/Login")
     Call<Token> login(@Body Login login);
 
+    @POST("/api/Accounts/Login")
+    Call<Token> login(@Header("authorization") String token, @Body Login login);
 
     @GET("/api/QuestionTag")
     Call<Tags> tags(@Header("authorization") String token);
