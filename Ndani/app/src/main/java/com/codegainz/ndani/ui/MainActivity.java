@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.View;
 
 import com.codegainz.ndani.R;
+import com.codegainz.ndani.ui.add.AddActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,10 +38,12 @@ public class MainActivity extends AppCompatActivity {
     private View.OnClickListener actionButtonClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            startActivity(new Intent(MainActivity.this, AddActivity.class));
+            /*
             Intent intent = new Intent(MainActivity.this, VideoActivity.class);
             Bundle bundle = new Bundle();
             bundle.putString(VideoActivity.CONFERENCE_ID, "Conference");
-            startActivity(intent);
+            startActivity(intent); */
         }
     };
 

@@ -71,7 +71,7 @@ public class VideoActivity extends AppCompatActivity implements AVChatListener, 
             sdk.getAVChat().getVideoController().openCamera();
             sdk.getAVChat().getVideoController().openPreview();
             sdk.getAVChat().getVideoController().bindRender(((NdaniApplication) getApplication()).getVideoUsername(), ownPreview);
-            sdk.getAVChat().join("1", "");
+            sdk.getAVChat().join(getIntent().getStringExtra(CONFERENCE_ID), "");
 
         } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();

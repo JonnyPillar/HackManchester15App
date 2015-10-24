@@ -49,8 +49,9 @@
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.add.AddActivity"
+            android:windowSoftInputMode="adjustResize"
             android:label="@string/title_activity_add"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>
