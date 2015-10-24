@@ -64,8 +64,12 @@ public class LoginActivity extends AppCompatActivity {
             token.enqueue(new Callback<Token>() {
                 @Override
                 public void onResponse(Response<Token> response, Retrofit retrofit) {
-                    response.body().save();
-                    complete();
+                    if(response.isSuccess()) {
+                        response.body().save();
+                        complete();
+                    } else {
+                        onFailure(null);
+                    }
                 }
 
                 @Override
