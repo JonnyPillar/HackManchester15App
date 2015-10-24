@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -24,6 +25,7 @@ import co.uk.rushorm.core.RushSearch;
  */
 public abstract class WebFragment extends Fragment {
 
+    private static final String BLANK = "about:blank";
 
     public WebFragment() {
         // Required empty public constructor
@@ -37,15 +39,26 @@ public abstract class WebFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_web, container, false);
-        webView = (WebView) view.findViewById(R.id.webView);
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_view);
         swipeRefreshLayout.setOnRefreshListener(refreshListener);
-        swipeRefreshLayout.setRefreshing(true);
+        swipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(true);
+            }
+        });
+
+        webView = (WebView) view.findViewById(R.id.webView);
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+
         webView.setWebViewClient(new WebViewClient() {
 
             public void onPageFinished(WebView view, String url) {
-                swipeRefreshLayout.setRefreshing(false);
-                swipeRefreshLayout.setEnabled(true);
+                if(!url.equals(BLANK)) {
+                    swipeRefreshLayout.setRefreshing(false);
+                    swipeRefreshLayout.setEnabled(true);
+                }
             }
         });
 
@@ -58,7 +71,7 @@ public abstract class WebFragment extends Fragment {
 
     private void load() {
         webView.stopLoading();
-        webView.loadUrl("about:blank");
+        webView.loadUrl(BLANK);
         Token token = new RushSearch().findSingle(Token.class);
         String baseUrl = ((NdaniApplication)getActivity().getApplication()).getBaseUrl() + getPath() + token.getToken();
         Uri.Builder builder = Uri.parse(baseUrl).buildUpon();
