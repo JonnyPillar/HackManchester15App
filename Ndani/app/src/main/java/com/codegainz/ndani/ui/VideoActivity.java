@@ -3,7 +3,11 @@ package com.codegainz.ndani.ui;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.codegainz.ndani.NdaniApplication;
 import com.codegainz.ndani.R;
 import com.oovoo.core.media.ooVooCamera;
@@ -16,7 +20,6 @@ import com.oovoo.sdk.interfaces.AudioRoute;
 import com.oovoo.sdk.interfaces.AudioRouteController;
 import com.oovoo.sdk.interfaces.Participant;
 import com.oovoo.sdk.interfaces.VideoControllerListener;
-import com.oovoo.sdk.interfaces.VideoRender;
 
 public class VideoActivity extends AppCompatActivity implements AVChatListener, VideoControllerListener, AudioControllerListener,AudioRouteController.AudioRouteControllerListener {
 
@@ -27,14 +30,24 @@ public class VideoActivity extends AppCompatActivity implements AVChatListener, 
     private VideoPanel ownPreview;
     private VideoPanel videoView;
 
+    private TextView loadingText;
+    private ImageView loadingImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
 
+        loadingText = (TextView) findViewById(R.id.loading_textView);
+        loadingImage = (ImageView) findViewById(R.id.loading_imageView);
         videoView = (VideoPanel) findViewById(R.id.video);
         videoView.setVisibility(View.GONE);
         ownPreview = (VideoPanel) findViewById(R.id.video_preview);
+
+        Glide.with(this)
+                .load(R.drawable.loading_spinner)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .into(loadingImage);
 
         try {
             sdk = ooVooClient.sharedInstance();
@@ -66,6 +79,7 @@ public class VideoActivity extends AppCompatActivity implements AVChatListener, 
         try {
             sdk.getAVChat().getVideoController().bindRender(participant.getID(), videoView);
             sdk.getAVChat().getVideoController().registerRemote(participant.getID());
+            loadingText.setVisibility(View.GONE);
             videoView.setVisibility(View.VISIBLE);
         } catch (InstantiationException e) {
             e.printStackTrace();
@@ -75,6 +89,7 @@ public class VideoActivity extends AppCompatActivity implements AVChatListener, 
     @Override
     public void onParticipantLeft(Participant participant) {
         try {
+            loadingText.setVisibility(View.VISIBLE);
             videoView.setVisibility(View.GONE);
             sdk.getAVChat().getVideoController().unbindRender(participant.getID(), videoView);
             sdk.getAVChat().getVideoController().unregisterRemote(participant.getID());
@@ -85,12 +100,7 @@ public class VideoActivity extends AppCompatActivity implements AVChatListener, 
 
     @Override
     public void onConferenceStateChanged(ConferenceState conferenceState, sdk_error sdk_error) {
-        if (conferenceState == ConferenceState.Joined && sdk_error == sdk_error.OK) {
-            //You are joined in a conference
-        }
-        else if (conferenceState == ConferenceState.Joined && sdk_error != sdk_error.OK) {
-            //You are not joined in a conference because an error occured
-        }
+
     }
 
     @Override
@@ -110,7 +120,16 @@ public class VideoActivity extends AppCompatActivity implements AVChatListener, 
 
     @Override
     public void onRemoteVideoStateChanged(String s, RemoteVideoState remoteVideoState, int i, int i1, sdk_error sdk_error) {
-
+        switch (remoteVideoState) {
+            case RVS_Started:
+            case RVS_Resumed:
+                loadingImage.setVisibility(View.GONE);
+                break;
+            case RVS_Stopped:
+            case RVS_Paused:
+                loadingImage.setVisibility(View.VISIBLE);
+                break;
+        }
     }
 
     @Override
