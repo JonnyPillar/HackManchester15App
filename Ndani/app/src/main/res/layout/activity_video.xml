@@ -54,6 +54,6 @@
                 android:layout_height="match_parent"
                 />
         </com.codegainz.ndani.ui.SquareFromWidthView>
-        
+
     </LinearLayout>
 </RelativeLayout>

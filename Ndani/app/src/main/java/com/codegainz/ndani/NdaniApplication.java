@@ -3,11 +3,22 @@ package com.codegainz.ndani;
 import android.app.Application;
 import android.provider.Settings;
 
+import com.codegainz.ndani.engine.ServerApi;
+import com.codegainz.ndani.engine.model.Token;
 import com.oovoo.core.LoggerListener;
 import com.oovoo.core.sdk_error;
 import com.oovoo.sdk.api.ooVooClient;
 import com.oovoo.sdk.interfaces.ooVooSdkResult;
 import com.oovoo.sdk.interfaces.ooVooSdkResultListener;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import co.uk.rushorm.android.AndroidInitializeConfig;
+import co.uk.rushorm.core.Rush;
+import co.uk.rushorm.core.RushCore;
+import retrofit.GsonConverterFactory;
+import retrofit.Retrofit;
 
 /**
  * Created by Stuart on 24/10/15.
@@ -16,10 +27,26 @@ public class NdaniApplication extends Application implements LoggerListener {
 
     private ooVooClient client;
     private boolean loginComplete = false;
+    private ServerApi serverApi;
 
     @Override
     public void onCreate() {
         super.onCreate();
+
+        AndroidInitializeConfig config = new AndroidInitializeConfig(getApplicationContext());
+        List<Class<? extends Rush>> classList = new ArrayList<>();
+        classList.add(Token.class);
+        config.setClasses(classList);
+        RushCore.initialize(config);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://ndani.azurewebsites.net")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        serverApi = retrofit.create(ServerApi.class);
+
+
         ooVooClient.setContext(this);
         ooVooClient.setLogger(this, LogLevel.Trace);
         try {
@@ -64,5 +91,9 @@ public class NdaniApplication extends Application implements LoggerListener {
 
     public String getVideoUsername(){
         return Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+    }
+
+    public ServerApi getServerApi() {
+        return serverApi;
     }
 }

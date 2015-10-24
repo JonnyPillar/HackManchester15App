@@ -2,6 +2,7 @@ package com.codegainz.ndani.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,7 +22,16 @@ import com.oovoo.sdk.interfaces.AudioRouteController;
 import com.oovoo.sdk.interfaces.Participant;
 import com.oovoo.sdk.interfaces.VideoControllerListener;
 
+import java.io.File;
+import java.io.IOException;
+
+import edu.cmu.pocketsphinx.SpeechRecognizer;
+import edu.cmu.pocketsphinx.SpeechRecognizerSetup;
+
 public class VideoActivity extends AppCompatActivity implements AVChatListener, VideoControllerListener, AudioControllerListener,AudioRouteController.AudioRouteControllerListener {
+
+    private static final String KWS_SEARCH = "wakeup";
+    private static final String KEYPHRASE = "oh mighty computer";
 
     private ooVooClient sdk = null;
 
@@ -32,6 +42,8 @@ public class VideoActivity extends AppCompatActivity implements AVChatListener, 
 
     private TextView loadingText;
     private ImageView loadingImage;
+
+    private SpeechRecognizer recognizer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +76,30 @@ public class VideoActivity extends AppCompatActivity implements AVChatListener, 
         } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
+       /* try {
+            Assets assets = new Assets(this);
+            File assetDir = assets.syncAssets();
+            setupRecognizer(assetDir);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } */
+
+    }
+
+    private void setupRecognizer(File assetsDir) throws IOException {
+
+        recognizer = SpeechRecognizerSetup.defaultSetup()
+                .setAcousticModel(new File(assetsDir, "en-us-ptm"))
+                .setDictionary(new File(assetsDir, "cmudict-en-us.dict"))
+                .setRawLogDir(assetsDir)
+                .setKeywordThreshold(1e-45f)
+                .setBoolean("-allphone_ci", true)
+                .getRecognizer();
+
+        recognizer.addListener(new SpeechListener(this));
+
+        recognizer.addKeyphraseSearch(KWS_SEARCH, KEYPHRASE);
+        recognizer.startListening(KWS_SEARCH);
     }
 
     @Override
