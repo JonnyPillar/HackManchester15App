@@ -28,6 +28,7 @@ public class NdaniApplication extends Application implements LoggerListener {
     private ooVooClient client;
     private boolean loginComplete = false;
     private ServerApi serverApi;
+    private String baseUrl;
 
     @Override
     public void onCreate() {
@@ -40,7 +41,7 @@ public class NdaniApplication extends Application implements LoggerListener {
         RushCore.initialize(config);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://ndani.azurewebsites.net")
+                .baseUrl(getBaseUrl())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -95,5 +96,9 @@ public class NdaniApplication extends Application implements LoggerListener {
 
     public ServerApi getServerApi() {
         return serverApi;
+    }
+
+    public String getBaseUrl() {
+        return "http://ndani.azurewebsites.net/";
     }
 }
