@@ -23,6 +23,8 @@ import com.oovoo.sdk.interfaces.AudioRoute;
 import com.oovoo.sdk.interfaces.AudioRouteController;
 import com.oovoo.sdk.interfaces.Participant;
 import com.oovoo.sdk.interfaces.VideoControllerListener;
+import com.oovoo.sdk.interfaces.ooVooSdkResult;
+import com.oovoo.sdk.interfaces.ooVooSdkResultListener;
 
 import java.io.File;
 import java.io.IOException;
@@ -82,6 +84,13 @@ public class VideoActivity extends AppCompatActivity implements AVChatListener, 
             sdk.getAVChat().getVideoController().openCamera();
             sdk.getAVChat().getVideoController().openPreview();
             sdk.getAVChat().getVideoController().bindRender(((NdaniApplication) getApplication()).getVideoUsername(), ownPreview);
+
+            sdk.getAVChat().getAudioController().initAudio(new ooVooSdkResultListener() {
+                public void onResult(ooVooSdkResult init_audio_result) {
+
+                }
+            });
+            
             sdk.getAVChat().getAudioController().setPlaybackMuted(false);
             sdk.getAVChat().join(questionId, "");
 
