@@ -27,7 +27,7 @@ import retrofit.Retrofit;
 public class AddActivity extends AppCompatActivity {
 
     private FlowLayout flowLayout;
-
+    private FloatingActionButton fab;
     private List<TagView> tagViews = new ArrayList<>();
 
     @Override
@@ -38,13 +38,8 @@ public class AddActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(addQuestion);
 
         Token token = new RushSearch().findSingle(Token.class);
         Call<Tags> tagsCall = ((NdaniApplication)getApplication()).getServerApi().tags(token.getToken());
@@ -70,5 +65,12 @@ public class AddActivity extends AppCompatActivity {
         });
 
     }
+
+    private View.OnClickListener addQuestion = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+        }
+    };
 
 }

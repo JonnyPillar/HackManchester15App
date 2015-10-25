@@ -28,7 +28,6 @@ public class NdaniApplication extends Application implements LoggerListener {
     private ooVooClient client;
     private boolean loginComplete = false;
     private ServerApi serverApi;
-    private String baseUrl;
 
     @Override
     public void onCreate() {

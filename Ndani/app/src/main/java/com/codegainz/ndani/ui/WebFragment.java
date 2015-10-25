@@ -103,4 +103,10 @@ public abstract class WebFragment extends Fragment {
         }
     };
 
+    public void refresh(){
+        swipeRefreshLayout.setRefreshing(true);
+        swipeRefreshLayout.setEnabled(false);
+        load();
+    }
+
 }
