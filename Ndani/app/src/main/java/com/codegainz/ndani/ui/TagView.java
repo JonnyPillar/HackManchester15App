@@ -9,12 +9,14 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.codegainz.ndani.R;
+import com.codegainz.ndani.engine.model.Tag;
 
 /**
  * Created by Stuart on 24/10/15.
  */
 public class TagView extends FrameLayout {
 
+    private Tag tag;
     private TextView textView;
     private View body;
 
@@ -46,8 +48,13 @@ public class TagView extends FrameLayout {
         textView = (TextView) body.findViewById(R.id.textView);
     }
 
-    public void setText(String text) {
-        textView.setText(text);
+    public void setTag(Tag tag) {
+        this.tag = tag;
+        textView.setText(tag.getName());
+    }
+
+    public Tag getTag(){
+        return tag;
     }
 
     private OnClickListener selectClickListener = new OnClickListener() {

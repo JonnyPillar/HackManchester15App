@@ -4,6 +4,7 @@ import android.app.Application;
 import android.provider.Settings;
 
 import com.codegainz.ndani.engine.ServerApi;
+import com.codegainz.ndani.engine.model.Tag;
 import com.codegainz.ndani.engine.model.Token;
 import com.oovoo.core.LoggerListener;
 import com.oovoo.core.sdk_error;
@@ -11,6 +12,7 @@ import com.oovoo.sdk.api.ooVooClient;
 import com.oovoo.sdk.interfaces.ooVooSdkResult;
 import com.oovoo.sdk.interfaces.ooVooSdkResultListener;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,9 +27,16 @@ import retrofit.Retrofit;
  */
 public class NdaniApplication extends Application implements LoggerListener {
 
+    public interface TagSelectedChange {
+        void change();
+    }
+
     private ooVooClient client;
     private boolean loginComplete = false;
     private ServerApi serverApi;
+    private List<Tag> selectedTags = new ArrayList<>();
+
+    private WeakReference<TagSelectedChange> listenerHolder;
 
     @Override
     public void onCreate() {
@@ -99,5 +108,20 @@ public class NdaniApplication extends Application implements LoggerListener {
 
     public String getBaseUrl() {
         return "http://ndani.azurewebsites.net/";
+    }
+
+    public List<Tag> getSelectedTags() {
+        return selectedTags;
+    }
+
+    public void setSelectedTags(List<Tag> tags) {
+        selectedTags = tags;
+        if(listenerHolder != null && listenerHolder.get() != null) {
+            listenerHolder.get().change();
+        }
+    }
+
+    public void setTagSelectedChange(TagSelectedChange tagSelectedChange) {
+        listenerHolder = new WeakReference<>(tagSelectedChange);
     }
 }

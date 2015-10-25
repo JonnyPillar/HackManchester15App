@@ -50,7 +50,7 @@ public class AddActivity extends AppCompatActivity {
                     for (Tag tag : response.body().getQuestionTags()) {
                         TagView tagView = new TagView(AddActivity.this);
                         tagViews.add(tagView);
-                        tagView.setText(tag.getName());
+                        tagView.setTag(tag);
                         FlowLayout.LayoutParams flowLP = new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT, FlowLayout.LayoutParams.WRAP_CONTENT);
                         flowLayout.addView(tagView, flowLP);
                     }
