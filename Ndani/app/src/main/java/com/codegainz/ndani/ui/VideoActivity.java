@@ -148,7 +148,7 @@ public class VideoActivity extends AppCompatActivity implements AVChatListener, 
         output.putExtra(CONFERENCE_ID, questionId);
         setResult(RESULT_OK, output);
 
-        super.onBackPressed();
+        finish();
     }
 
     @Override

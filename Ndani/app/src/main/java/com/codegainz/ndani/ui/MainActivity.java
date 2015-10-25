@@ -2,6 +2,7 @@ package com.codegainz.ndani.ui;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -131,13 +132,20 @@ public class MainActivity extends AppCompatActivity {
     };
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
         if(requestCode == VIDEO_CHAT) {
-            EndorseFragment fragment = new EndorseFragment();
-            Bundle bundle = new Bundle();
-            bundle.putString(EndorseFragment.ID, data.getStringExtra(DetailsFragment.ID));
-            fragment.setArguments(bundle);
-            fragment.show(getSupportFragmentManager(), "EndorseFragment");
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    EndorseFragment fragment = new EndorseFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString(EndorseFragment.ID, data.getStringExtra(DetailsFragment.ID));
+                    fragment.setArguments(bundle);
+                    fragment.show(getSupportFragmentManager(), "EndorseFragment");
+                }
+            }, 2000);
+
         }
 
     }
