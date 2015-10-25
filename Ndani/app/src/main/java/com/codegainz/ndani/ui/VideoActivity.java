@@ -90,7 +90,7 @@ public class VideoActivity extends AppCompatActivity implements AVChatListener, 
 
                 }
             });
-            
+
             sdk.getAVChat().getAudioController().setPlaybackMuted(false);
             sdk.getAVChat().join(questionId, "");
 

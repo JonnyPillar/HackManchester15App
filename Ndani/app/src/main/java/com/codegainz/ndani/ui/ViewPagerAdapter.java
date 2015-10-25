@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.codegainz.ndani.ui.answered.AnsweredFragment;
 import com.codegainz.ndani.ui.asked.AskedFragment;
 import com.codegainz.ndani.ui.home.HomeFragment;
+import com.codegainz.ndani.ui.profile.MyProfileFragment;
 import com.codegainz.ndani.ui.profile.ProfileFragment;
 
 /**
@@ -35,7 +36,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
             case HOME: return new HomeFragment();
             case ASKED: return new AskedFragment();
             case ANSWERED: return new AnsweredFragment();
-            case PROFILE: return new ProfileFragment();
+            case PROFILE: return new MyProfileFragment();
             default: return null;
         }
     }
