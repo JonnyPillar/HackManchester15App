@@ -1,9 +1,11 @@
 package com.codegainz.ndani.ui;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -12,12 +14,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.codegainz.ndani.NdaniApplication;
 import com.codegainz.ndani.R;
+import com.codegainz.ndani.engine.Poller;
+import com.codegainz.ndani.engine.model.Question;
 import com.codegainz.ndani.ui.add.AddActivity;
 
 public class MainActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
+    private Poller poller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +42,38 @@ public class MainActivity extends AppCompatActivity {
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(actionButtonClickListener);
+
+        poller = new Poller(new Poller.VideoCall() {
+            @Override
+            public void someOneEnteredVideo(final Question question) {
+
+                // 1. Instantiate an AlertDialog.Builder with its constructor
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+                builder.setTitle("Join video call?")
+                        .setMessage(question.getTitle());
+
+                AlertDialog dialog = builder.create();
+                dialog.setButton(AlertDialog.BUTTON_POSITIVE, "Join", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(MainActivity.this, VideoActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString(VideoActivity.CONFERENCE_ID, question.getId());
+                        startActivity(intent);
+                    }
+                });
+                dialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+            }
+        }, ((NdaniApplication) getApplication()).getServerApi());
+
+        poller.startPoling();
     }
 
     private View.OnClickListener actionButtonClickListener = new View.OnClickListener() {
