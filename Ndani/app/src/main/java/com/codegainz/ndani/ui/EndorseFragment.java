@@ -29,7 +29,7 @@ public class EndorseFragment extends DialogFragment {
         dialog.setButton(AlertDialog.BUTTON_POSITIVE, "Endorse", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                dialog.dismiss();
             }
         });
         dialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {

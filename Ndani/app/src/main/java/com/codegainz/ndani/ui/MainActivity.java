@@ -25,6 +25,7 @@ import com.codegainz.ndani.ui.details.DetailsFragment;
 public class MainActivity extends AppCompatActivity {
 
     public static int VIDEO_CHAT = 1;
+    public static int REFRESH = 2;
 
     private ViewPager viewPager;
     private Poller poller;
@@ -37,12 +38,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
-        viewPager.setAdapter(adapter);
-        viewPager.addOnPageChangeListener(pageChangeListener);
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-        tabLayout.setupWithViewPager(viewPager);
+        setUp();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(actionButtonClickListener);
@@ -80,10 +76,19 @@ public class MainActivity extends AppCompatActivity {
         poller.startPoling();
     }
 
+    private void setUp(){
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(pageChangeListener);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        tabLayout.setupWithViewPager(viewPager);
+    }
+
     private View.OnClickListener actionButtonClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            startActivity(new Intent(MainActivity.this, AddActivity.class));
+            startActivityForResult(new Intent(MainActivity.this, AddActivity.class), REFRESH);
             /*
             Intent intent = new Intent(MainActivity.this, VideoActivity.class);
             Bundle bundle = new Bundle();
@@ -146,6 +151,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }, 2000);
 
+        } else if(requestCode == REFRESH){
+            setUp();
         }
 
     }

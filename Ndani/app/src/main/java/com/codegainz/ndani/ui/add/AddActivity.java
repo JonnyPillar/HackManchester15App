@@ -96,9 +96,9 @@ public class AddActivity extends AppCompatActivity {
 
                     if(response.isSuccess()) {
                         finish();
-                        Intent intent = new Intent(AddActivity.this, DetailsActivity.class);
+                        /*Intent intent = new Intent(AddActivity.this, DetailsActivity.class);
                         intent.putExtra(DetailsActivity.ID, response.body().getQuestionId());
-                        startActivity(intent);
+                        startActivity(intent);*/
 
                     }else{
                         onFailure(null);

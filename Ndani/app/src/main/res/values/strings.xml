@@ -9,5 +9,6 @@
 
     <string name="title_activity_details">Quest details</string>
     <string name="title_activity_add">Ask new question</string>
+    <string name="title_activity_profile">User profile</string>
 
 </resources>

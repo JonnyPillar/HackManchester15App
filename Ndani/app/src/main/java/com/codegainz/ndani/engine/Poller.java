@@ -6,6 +6,9 @@ import com.codegainz.ndani.engine.model.Poll;
 import com.codegainz.ndani.engine.model.Question;
 import com.codegainz.ndani.engine.model.Token;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import co.uk.rushorm.core.RushSearch;
 import retrofit.Call;
 import retrofit.Callback;
@@ -25,6 +28,8 @@ public class Poller {
 
     private static final int POLL_TIME = 1500;
 
+    private List<Question> sentQuestion = new ArrayList<>();
+
     private final Handler handler = new Handler();
     private final Runnable runnable = new Runnable() {
         @Override
@@ -37,7 +42,10 @@ public class Poller {
                     if (response.isSuccess()) {
                         if (listener != null) {
                             for (Question question : response.body().getPollQuestions()) {
-                                listener.someOneEnteredVideo(question);
+                                if (!sentQuestion.contains(question)) {
+                                    listener.someOneEnteredVideo(question);
+                                    sentQuestion.add(question);
+                                }
                             }
                         }
                         handler.postDelayed(runnable, POLL_TIME);
