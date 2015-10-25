@@ -76,14 +76,15 @@ public abstract class WebFragment extends Fragment {
         String baseUrl = ((NdaniApplication)getActivity().getApplication()).getBaseUrl() + getPath() + token.getToken();
         Uri.Builder builder = Uri.parse(baseUrl).buildUpon();
         builder.path(getPath());
-        builder.appendQueryParameter("id", token.getToken());
+        builder.appendQueryParameter("token", token.getToken());
         Map<String, String> queries = getQueries();
         if(queries != null) {
             for (String key : queries.keySet()) {
                 builder.appendQueryParameter(key, queries.get(key));
             }
         }
-        webView.loadUrl(builder.build().toString());
+        String url = builder.build().toString();
+        webView.loadUrl(url);
     }
 
     public WebView getWebView(){

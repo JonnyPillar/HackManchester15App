@@ -14,7 +14,7 @@ public class DetailsFragment extends WebFragment {
 
     @Override
     public String getPath() {
-        return "question/detail";
+        return "question/details";
     }
 
     @Override

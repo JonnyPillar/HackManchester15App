@@ -65,8 +65,7 @@ public class AddActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Throwable t) {
-                int i = 0;
-                i ++;
+  
             }
         });
 

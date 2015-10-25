@@ -6,6 +6,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_video">VideoActivity</string>
     <string name="video_token">MDAxMDAxAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAnHUZ8ZJQpEmstgyWH9AhqthLSGRGiFmlZoxHX6wQ30q7Wc%2FYHdz0JvTDb110tcre4rURtHm3sHSggEKEzc50IwDIc9joGA8hZQwqA9YPSRAY3YytVuJuC0pPcnHZYHT0%3D</string>
-    <string name="title_activity_details">DetailsActivity</string>
+
+    <string name="title_activity_details">Quest details</string>
     <string name="title_activity_add">Ask new question</string>
+
 </resources>

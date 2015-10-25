@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -24,46 +25,61 @@
                 android:background="?attr/colorPrimary"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_marginTop="15dp"
-                android:layout_height="wrap_content"
+            <LinearLayout
+                android:orientation="vertical"
+                android:paddingLeft="40dp"
+                android:paddingRight="40dp"
                 android:layout_width="match_parent"
-                >
-                <EditText
-                    android:id="@+id/title"
-                    android:hint="Title"
-                    android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+                <android.support.design.widget.TextInputLayout
+                    android:layout_marginTop="15dp"
                     android:layout_height="wrap_content"
-                    />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_width="match_parent"
+                    >
+                    <EditText
+                        android:id="@+id/title"
+                        android:hint="Title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
+                </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_marginTop="25dp"
-                android:layout_marginBottom="15dp"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                >
-                <EditText
-                    android:hint="Description"
-                    android:id="@+id/description"
-                    android:layout_width="match_parent"
+                <android.support.design.widget.TextInputLayout
+                    android:layout_marginTop="25dp"
+                    android:layout_marginBottom="15dp"
                     android:layout_height="wrap_content"
-                    />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_width="match_parent"
+                    >
+                    <EditText
+                        android:hint="Description"
+                        android:id="@+id/description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
+
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
         </android.support.design.widget.AppBarLayout>
 
-        <TextView
-            android:layout_marginTop="30dp"
-            android:layout_margin="20dp"
-            android:textColor="#BCBCBC"
-            android:text="Tags"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <com.codegainz.ndani.ui.FlowLayout
-            android:id="@+id/flowLayout"
+        <LinearLayout
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_marginTop="30dp"
+                android:layout_margin="20dp"
+                android:textColor="#BCBCBC"
+                android:text="Tags"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.codegainz.ndani.ui.FlowLayout
+                android:id="@+id/flowLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
     </LinearLayout>
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
