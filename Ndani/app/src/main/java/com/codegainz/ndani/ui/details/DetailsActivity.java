@@ -1,5 +1,6 @@
 package com.codegainz.ndani.ui.details;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,6 +14,8 @@ import com.codegainz.ndani.NdaniApplication;
 import com.codegainz.ndani.R;
 import com.codegainz.ndani.engine.model.Comment;
 import com.codegainz.ndani.engine.model.Token;
+import com.codegainz.ndani.ui.MainActivity;
+import com.codegainz.ndani.ui.VideoActivity;
 
 import co.uk.rushorm.core.RushSearch;
 import retrofit.Call;
@@ -65,6 +68,11 @@ public class DetailsActivity extends AppCompatActivity {
                         commentField.setText(null);
                         commentField.setEnabled(true);
                         fragment.refresh();
+
+                        Intent intent = new Intent(DetailsActivity.this, VideoActivity.class);
+                        intent.putExtra(VideoActivity.CONFERENCE_ID, getIntent().getStringExtra(ID));
+                        startActivity(intent);
+
                     } else {
                         onFailure(null);
                     }
@@ -76,7 +84,6 @@ public class DetailsActivity extends AppCompatActivity {
                     Snackbar.make(findViewById(R.id.details_content), "Sorry failed to post", Snackbar.LENGTH_LONG);
                 }
             });
-
         }
     };
 

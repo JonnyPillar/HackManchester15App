@@ -58,8 +58,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(MainActivity.this, VideoActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putString(VideoActivity.CONFERENCE_ID, question.getId());
+                        intent.putExtra(VideoActivity.CONFERENCE_ID, question.getId());
                         startActivity(intent);
                     }
                 });
@@ -69,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 });
+                dialog.show();
 
             }
         }, ((NdaniApplication) getApplication()).getServerApi());

@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.codegainz.ndani.NdaniApplication;
 import com.codegainz.ndani.R;
+import com.codegainz.ndani.engine.model.Token;
 import com.oovoo.core.media.ooVooCamera;
 import com.oovoo.core.sdk_error;
 import com.oovoo.sdk.api.ooVooClient;
@@ -25,8 +26,13 @@ import com.oovoo.sdk.interfaces.VideoControllerListener;
 import java.io.File;
 import java.io.IOException;
 
+import co.uk.rushorm.core.RushSearch;
 import edu.cmu.pocketsphinx.SpeechRecognizer;
 import edu.cmu.pocketsphinx.SpeechRecognizerSetup;
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 public class VideoActivity extends AppCompatActivity implements AVChatListener, VideoControllerListener, AudioControllerListener,AudioRouteController.AudioRouteControllerListener {
 
@@ -45,6 +51,8 @@ public class VideoActivity extends AppCompatActivity implements AVChatListener, 
 
     private SpeechRecognizer recognizer;
 
+    private String questionId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +63,8 @@ public class VideoActivity extends AppCompatActivity implements AVChatListener, 
         videoView = (VideoPanel) findViewById(R.id.video);
         videoView.setVisibility(View.GONE);
         ownPreview = (VideoPanel) findViewById(R.id.video_preview);
+
+        questionId = getIntent().getStringExtra(CONFERENCE_ID);
 
         Glide.with(this)
                 .load(R.drawable.loading_spinner)
@@ -71,11 +81,22 @@ public class VideoActivity extends AppCompatActivity implements AVChatListener, 
             sdk.getAVChat().getVideoController().openCamera();
             sdk.getAVChat().getVideoController().openPreview();
             sdk.getAVChat().getVideoController().bindRender(((NdaniApplication) getApplication()).getVideoUsername(), ownPreview);
-            sdk.getAVChat().join(getIntent().getStringExtra(CONFERENCE_ID), "");
+            sdk.getAVChat().getAudioController().setPlaybackMuted(false);
+            sdk.getAVChat().join(questionId, "");
 
         } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
+
+        Token token = new RushSearch().findSingle(Token.class);
+        Call<Void> call = ((NdaniApplication)getApplication()).getServerApi().enter(token.getToken(), questionId);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Response<Void> response, Retrofit retrofit) {}
+            @Override
+            public void onFailure(Throwable t) {}
+        });
+
        /* try {
             Assets assets = new Assets(this);
             File assetDir = assets.syncAssets();
@@ -104,6 +125,16 @@ public class VideoActivity extends AppCompatActivity implements AVChatListener, 
 
     @Override
     public void onBackPressed() {
+
+        Token token = new RushSearch().findSingle(Token.class);
+        Call<Void> call = ((NdaniApplication)getApplication()).getServerApi().leave(token.getToken(), getIntent().getStringExtra(CONFERENCE_ID));
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Response<Void> response, Retrofit retrofit) {}
+            @Override
+            public void onFailure(Throwable t) {}
+        });
+
         sdk.getAVChat().getVideoController().closePreview();
         sdk.getAVChat().getVideoController().closeCamera();
         sdk.getAVChat().leave();

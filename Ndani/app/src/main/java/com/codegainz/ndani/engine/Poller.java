@@ -2,7 +2,15 @@ package com.codegainz.ndani.engine;
 
 import android.os.Handler;
 
+import com.codegainz.ndani.engine.model.Poll;
 import com.codegainz.ndani.engine.model.Question;
+import com.codegainz.ndani.engine.model.Token;
+
+import co.uk.rushorm.core.RushSearch;
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * Created by Stuart on 25/10/15.
@@ -21,10 +29,28 @@ public class Poller {
     private final Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            //serverApi.
+            Token token = new RushSearch().findSingle(Token.class);
+            Call<Poll> call = serverApi.poll(token.getToken());
+            call.enqueue(new Callback<Poll>() {
+                @Override
+                public void onResponse(Response<Poll> response, Retrofit retrofit) {
+                    if (response.isSuccess()) {
+                        if (listener != null) {
+                            for (Question question : response.body().getPollQuestions()) {
+                                listener.someOneEnteredVideo(question);
+                            }
+                        }
+                        handler.postDelayed(runnable, POLL_TIME);
+                    } else {
+                        onFailure(null);
+                    }
+                }
 
-
-            handler.postDelayed(this, POLL_TIME);
+                @Override
+                public void onFailure(Throwable t) {
+                    handler.postDelayed(runnable, POLL_TIME);
+                }
+            });
         }
     };
 
