@@ -2,6 +2,8 @@ package com.codegainz.ndani.engine;
 
 import com.codegainz.ndani.engine.model.Comment;
 import com.codegainz.ndani.engine.model.Login;
+import com.codegainz.ndani.engine.model.Question;
+import com.codegainz.ndani.engine.model.QuestionId;
 import com.codegainz.ndani.engine.model.Tags;
 import com.codegainz.ndani.engine.model.Token;
 
@@ -25,4 +27,6 @@ public interface ServerApi {
     @POST("/api/Offers/Submit")
     Call<Void> comment(@Header("authorization") String token, @Body Comment comment);
 
+    @POST("/api/Questions/Submit")
+    Call<QuestionId> question(@Header("authorization") String token, @Body Question question);
 }
