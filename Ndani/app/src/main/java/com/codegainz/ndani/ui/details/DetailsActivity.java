@@ -7,6 +7,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
@@ -15,6 +18,7 @@ import com.codegainz.ndani.R;
 import com.codegainz.ndani.engine.model.Comment;
 import com.codegainz.ndani.engine.model.Token;
 import com.codegainz.ndani.ui.MainActivity;
+import com.codegainz.ndani.ui.TagsFilterDialog;
 import com.codegainz.ndani.ui.VideoActivity;
 
 import co.uk.rushorm.core.RushSearch;
@@ -51,6 +55,28 @@ public class DetailsActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.content, fragment)
                 .commit();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.share, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.share:
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("text/plain");
+                i.putExtra(Intent.EXTRA_SUBJECT, "Share");
+                i.putExtra(Intent.EXTRA_TEXT, ((NdaniApplication)getApplication()).getBaseUrl() + "question/details/" + getIntent().getStringExtra(ID));
+                startActivity(Intent.createChooser(i, "Share"));
+                return true;
+        }
+        return false;
     }
 
     private View.OnClickListener addComment = new View.OnClickListener() {

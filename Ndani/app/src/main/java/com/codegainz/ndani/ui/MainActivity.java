@@ -69,11 +69,20 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 dialog.show();
-
             }
         }, ((NdaniApplication) getApplication()).getServerApi());
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
         poller.startPoling();
+    }
+
+    @Override
+    protected void onStop() {
+        poller.startPoling();
+        super.onStop();
     }
 
     private void setUp(){
@@ -89,11 +98,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             startActivityForResult(new Intent(MainActivity.this, AddActivity.class), REFRESH);
-            /*
-            Intent intent = new Intent(MainActivity.this, VideoActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putString(VideoActivity.CONFERENCE_ID, "Conference");
-            startActivity(intent); */
         }
     };
 

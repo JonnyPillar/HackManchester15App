@@ -60,12 +60,13 @@ public class HomeFragment extends WebFragment implements NdaniApplication.TagSel
         Map<String, String> map = new HashMap<>();
         List<Tag> tags = ((NdaniApplication)getActivity().getApplication()).getSelectedTags();
         StringBuilder tagsString = new StringBuilder();
-        for(Tag tag : tags){
-            tagsString.append(tag.getName());
-            tagsString.append(",");
+        for(int i = 0; i < tags.size(); i++){
+            tagsString.append(tags.get(i).getName());
+            if(i < tags.size() - 1) {
+                tagsString.append(",");
+            }
         }
         if(tags.size() > 0) {
-            tagsString.reverse();
             map.put("tags", tagsString.toString());
         }
         return map;

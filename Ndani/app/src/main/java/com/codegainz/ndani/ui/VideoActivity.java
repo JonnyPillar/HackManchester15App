@@ -80,7 +80,7 @@ public class VideoActivity extends AppCompatActivity implements AVChatListener, 
             sdk.getAVChat().getVideoController().setListener(this);
             sdk.getAVChat().getAudioController().setListener(this);
             sdk.getAVChat().getAudioController().getAudioRouteController().setListener(this);
-
+            
             sdk.getAVChat().getVideoController().openCamera();
             sdk.getAVChat().getVideoController().openPreview();
             sdk.getAVChat().getVideoController().bindRender(((NdaniApplication) getApplication()).getVideoUsername(), ownPreview);

@@ -41,10 +41,12 @@ public class Poller {
                 public void onResponse(Response<Poll> response, Retrofit retrofit) {
                     if (response.isSuccess()) {
                         if (listener != null) {
-                            for (Question question : response.body().getPollQuestions()) {
-                                if (!sentQuestion.contains(question)) {
-                                    listener.someOneEnteredVideo(question);
-                                    sentQuestion.add(question);
+                            if (response.body() != null && response.body().getPollQuestions() != null) {
+                                for (Question question : response.body().getPollQuestions()) {
+                                    if (!sentQuestion.contains(question)) {
+                                        listener.someOneEnteredVideo(question);
+                                        sentQuestion.add(question);
+                                    }
                                 }
                             }
                         }
