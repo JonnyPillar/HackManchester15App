@@ -19,8 +19,11 @@ import com.codegainz.ndani.R;
 import com.codegainz.ndani.engine.Poller;
 import com.codegainz.ndani.engine.model.Question;
 import com.codegainz.ndani.ui.add.AddActivity;
+import com.codegainz.ndani.ui.details.DetailsFragment;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static int VIDEO_CHAT = 1;
 
     private ViewPager viewPager;
     private Poller poller;
@@ -59,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(MainActivity.this, VideoActivity.class);
                         intent.putExtra(VideoActivity.CONFERENCE_ID, question.getId());
-                        startActivity(intent);
+                        startActivityForResult(intent, VIDEO_CHAT);
                     }
                 });
                 dialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
@@ -126,4 +129,16 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == VIDEO_CHAT) {
+            EndorseFragment fragment = new EndorseFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString(EndorseFragment.ID, data.getStringExtra(DetailsFragment.ID));
+            fragment.setArguments(bundle);
+            fragment.show(getSupportFragmentManager(), "EndorseFragment");
+        }
+
+    }
 }

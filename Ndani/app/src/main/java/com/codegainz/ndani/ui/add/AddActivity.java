@@ -17,6 +17,7 @@ import com.codegainz.ndani.engine.model.Tag;
 import com.codegainz.ndani.engine.model.Tags;
 import com.codegainz.ndani.engine.model.Token;
 import com.codegainz.ndani.ui.FlowLayout;
+import com.codegainz.ndani.ui.MainActivity;
 import com.codegainz.ndani.ui.TagView;
 import com.codegainz.ndani.ui.details.DetailsActivity;
 
@@ -98,6 +99,7 @@ public class AddActivity extends AppCompatActivity {
                         Intent intent = new Intent(AddActivity.this, DetailsActivity.class);
                         intent.putExtra(DetailsActivity.ID, response.body().getQuestionId());
                         startActivity(intent);
+
                     }else{
                         onFailure(null);
                     }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 
+import com.codegainz.ndani.ui.MainActivity;
 import com.codegainz.ndani.ui.WebFragment;
 import com.codegainz.ndani.ui.details.DetailsActivity;
 
@@ -30,6 +31,8 @@ public class AnsweredFragment extends WebFragment {
             Intent intent = new Intent(getActivity(), DetailsActivity.class);
             intent.putExtra(DetailsActivity.ID, id);
             getActivity().startActivity(intent);
+
+
         }
     };
 }

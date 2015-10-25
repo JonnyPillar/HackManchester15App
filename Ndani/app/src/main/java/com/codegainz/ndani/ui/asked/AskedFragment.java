@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 
+import com.codegainz.ndani.ui.MainActivity;
 import com.codegainz.ndani.ui.WebFragment;
 import com.codegainz.ndani.ui.details.DetailsActivity;
 

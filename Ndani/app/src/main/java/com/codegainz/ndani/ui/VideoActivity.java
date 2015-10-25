@@ -1,5 +1,6 @@
 package com.codegainz.ndani.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -130,14 +131,23 @@ public class VideoActivity extends AppCompatActivity implements AVChatListener, 
         Call<Void> call = ((NdaniApplication)getApplication()).getServerApi().leave(token.getToken(), getIntent().getStringExtra(CONFERENCE_ID));
         call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Response<Void> response, Retrofit retrofit) {}
+            public void onResponse(Response<Void> response, Retrofit retrofit) {
+            }
+
             @Override
-            public void onFailure(Throwable t) {}
+            public void onFailure(Throwable t) {
+            }
         });
 
         sdk.getAVChat().getVideoController().closePreview();
         sdk.getAVChat().getVideoController().closeCamera();
         sdk.getAVChat().leave();
+
+
+        Intent output = new Intent();
+        output.putExtra(CONFERENCE_ID, questionId);
+        setResult(RESULT_OK, output);
+
         super.onBackPressed();
     }
 
