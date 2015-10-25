@@ -29,6 +29,7 @@ public class HomeFragment extends WebFragment implements NdaniApplication.TagSel
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getWebView().addJavascriptInterface(itemClicked, "nativeListener");
+        getWebView().addJavascriptInterface(share, "shareListener");
         ((NdaniApplication)getActivity().getApplication()).setTagSelectedChange(this);
     }
 
@@ -38,6 +39,19 @@ public class HomeFragment extends WebFragment implements NdaniApplication.TagSel
             Intent intent = new Intent(getActivity(), DetailsActivity.class);
             intent.putExtra(DetailsActivity.ID, id);
             getActivity().startActivity(intent);
+        }
+    };
+
+    private Object share = new Object() {
+        @JavascriptInterface
+        public void performClick(String title) {
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, title);
+            sendIntent.setType("text/plain");
+
+            Intent chooser = Intent.createChooser(sendIntent, "Share");
+            startActivity(chooser);
         }
     };
 
